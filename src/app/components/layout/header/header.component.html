@@ -1,1 +1,7 @@
-<p>header works!</p>
+<mat-toolbar color="primary" style="height: 85px; padding: 0 16px;">
+<div fxLayoutAlign="start center" fxFlex="100%" fxHide.xs>
+    <button mat-button routerLink="" [routerLinkActiveOptions]="{exact:true}" routerLinkActive="Selected">Users</button>
+     <button mat-button routerLink="/post" routerLinkActive="Selected">Post</button>
+</div>
+
+</mat-toolbar>
