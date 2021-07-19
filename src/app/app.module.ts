@@ -18,6 +18,7 @@ import { ApiService } from './services/api.service';
 import { UserCardComponent } from './components/layout/user-card.component';
 import { UserListComponent } from './components/user-list.component';
 import { StoreModule } from '@ngrx/store';
+import { rootReducer } from '../app/reducers';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { StoreModule } from '@ngrx/store';
     PostComponent, UserCardComponent, UserListComponent
   ],
   imports: [
-    BrowserModule,FlexLayoutModule,HttpClientModule, FlexModule, AppRoutingModule, MaterialModule,  BrowserAnimationsModule, StoreModule.forRoot({}, {})
+    BrowserModule,FlexLayoutModule,HttpClientModule, FlexModule, AppRoutingModule, MaterialModule,  BrowserAnimationsModule,
+     StoreModule.forRoot(rootReducer)
   ],
   providers: [HttpService, ApiService],
   bootstrap: [AppComponent]
