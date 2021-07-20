@@ -5,6 +5,7 @@ import { UserListRequestAction, UserListSuccessAction } from "../../actions/user
 import { User } from "src/app/models/user";
 import { ApiService } from "src/app/services/api.service";
 import { getUserLoaded, getUserLoading, getUsers, RootReducerState } from "../../reducers";
+import { RepositoryService } from "src/app/services/repository.service";
 
 @Component({
     selector: 'youtube-users',
@@ -12,30 +13,26 @@ import { getUserLoaded, getUserLoading, getUsers, RootReducerState } from "../..
 })
 export class UserComponent implements OnInit{
     
-    constructor(private apiService: ApiService, private store: Store<RootReducerState>) {       
+    constructor(private repoServive : RepositoryService) {       
     }
     users: User[] =[];
+    loading = false;
+    error = false;
     ngOnInit(){
     this.fetchData();
     }
 
     fetchData(){
+        const observer = this.repoServive.getUserList();
+        const userData$ = observer[1];
+        const loading$ = observer[0];
+        const error$ = observer[2];
 
-        const loading$ = this.store.select(getUserLoading);
-        const loaded$ = this.store.select(getUserLoaded);        
-        const getUserData = this.store.select(getUsers);
-        
-        combineLatest([loaded$, loading$]).subscribe((data)=>{
-            if(!data[0] && !data[1]){
-                this.store.dispatch(new UserListRequestAction())
-                this.apiService.getAllPost().subscribe(data => {             
-                    this.store.dispatch(new UserListSuccessAction({data}))
-               });
-            }
-        });
-        
-         this.store.select(getUsers).subscribe((data)=>{
-             this.users = data;
-         })
+        userData$.subscribe(data=> this.users =data);
+        loading$.subscribe(data=> this.loading =data);
+        error$.subscribe(data=> this.error =data);
+    }
+    tryAgain(){
+        this.repoServive.getUserList(true);
     }
 }

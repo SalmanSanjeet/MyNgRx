@@ -1,5 +1,9 @@
-<div fxLayout="column" fxLayoutGap="30px" fxLayoutAlign="center center">
-    <youtube-user-list [users] = "this.users"> 
-        
-    </youtube-user-list>
+<div fxLayout="column" fxLayoutGap="30px" fxLayoutAlign="start center">
+    <youtube-user-list *ngIf="!loading && !error" [users] = "this.users"></youtube-user-list>
+    <mat-spinner *ngIf="loading"></mat-spinner>
+    <div *ngIf="error && !loading" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="center center">
+        <mat-icon>error_outline</mat-icon>
+        <span>Error Occured</span>
+        <button (click)="tryAgain()" mat-raised-button color="warn">Try Again</button>
+    </div>
 </div>
